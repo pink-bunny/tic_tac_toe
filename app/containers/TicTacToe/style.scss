@@ -1,0 +1,52 @@
+#app {
+  background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img(11).jpg");
+  background-size: cover;
+}
+.ttt {
+  width: max-content;
+  margin: 0 auto;
+}
+.ttt-nav {
+  display: flex;
+  justify-content: space-between;
+}
+.ttt-nav__btn {
+  padding: 0.25em 1em;
+  margin: 1em 0;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  border: 2px solid #41ADDD;
+  color: #41ADDD;
+  width: 50%;
+  text-align: center;
+  &:first-child {
+    margin-right: 1em;
+  }
+  &:active {
+    background: #41ADDD;
+    color: #FFF;
+  }
+}
+.ttt-result {
+  text-align: left;
+}
+.ttt-result__item {
+  margin-bottom: 8px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.ttt-field {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 300px;
+  height: 300px;
+}
+.ttt-field__item {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background-color: rgba(16, 42, 64, 0.75);
+}
