@@ -10,6 +10,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 
+import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import TicTacToe from 'containers/TicTacToe/Loadable';
 import Header from 'components/Header';
@@ -25,6 +26,7 @@ const App = () => (
     </Helmet>
 
     <Switch>
+      <Route exact path="/home" component={HomePage} />
       <Route exact path="/" component={TicTacToe} />
       <Route path="" component={NotFoundPage} />
     </Switch>
