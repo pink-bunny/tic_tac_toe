@@ -2,8 +2,11 @@ import { SAY_HELLO } from './constants';
 
 // The initial state of the App
 export const initialState = {
-  txt: '',
-  currentUserName: 'Lolka',
+  fieldLength: 9,
+  winner: null,
+  winX: null,
+  winO: null,
+  setsPlayed: null,
 };
 
 function ticTacToeReducer(state = initialState, action) {

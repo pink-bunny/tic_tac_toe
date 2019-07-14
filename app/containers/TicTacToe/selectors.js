@@ -3,12 +3,12 @@ import { initialState } from './reducer';
 
 const selectTicTacToe = (state) => state.ticTacToe || initialState;
 
-const makeSelectCurrentUser = () => createSelector(
+const makeSelectCurrentTTTFieldLength = () => createSelector(
   selectTicTacToe,
-  (globalState) => globalState.currentUserName
+  (ticTacToelState) => ticTacToelState.fieldLength
 );
 
 export {
   selectTicTacToe,
-  makeSelectCurrentUser,
+  makeSelectCurrentTTTFieldLength,
 };
