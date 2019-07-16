@@ -6,6 +6,15 @@
   width: max-content;
   margin: 0 auto;
 }
+.ttt-title {
+  text-align: center;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+.ttt-title__sign {
+  font-weight: bold;
+  text-transform: uppercase;
+}
 .ttt-nav {
   display: flex;
   justify-content: space-between;
