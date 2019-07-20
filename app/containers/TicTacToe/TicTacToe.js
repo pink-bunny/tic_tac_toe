@@ -8,9 +8,7 @@ export default class TicTacToe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPlayer: 'player_x',
-      player_x: 'x',
-      player_o: 'o',
+      currentPlayer: null,
       items: [],
       finishedGame: false
     }
@@ -21,20 +19,20 @@ export default class TicTacToe extends React.Component {
     let currentPlayerName = this.state.currentPlayer
     updatedItemsArr[i] = {
       ...this.state.items[i],
-      value: this.state[currentPlayerName],
+      value: this.props[currentPlayerName].value,
       disabled: true
     };
 
     this.setState({
       ...this.state,
-      currentPlayer: (currentPlayerName === 'player_x' ? 'player_o' : 'player_x'),
+      currentPlayer: (currentPlayerName === 'player_1' ? 'player_2' : 'player_1'),
       items: updatedItemsArr
     })
     return this.checkWinner(currentPlayerName);
   };
 
   checkWinner(currentPlayerName) {
-    let checkedSign = this.state[currentPlayerName];
+    let checkedSign = this.props[currentPlayerName].value;
     let stringLength = Math.sqrt(this.props.fieldLength);
     let arr = this.state.items;
     let multiArr = [];
@@ -108,12 +106,17 @@ export default class TicTacToe extends React.Component {
         value: null
       });
     }
-    this.setState({ items: arr })
+    this.setState({
+      ...this.state,
+      currentPlayer: this.props.currentPlayer,
+      items: arr
+    })
   }
 
   render() {
     let { items, finishedGame } = this.state;
-    let playerSign = this.state.currentPlayer;
+    let { setsPlayed, player_1, player_2 } = this.props;
+    let player = this.state.currentPlayer;
 
     return (
       <section className="ttt">
@@ -122,15 +125,35 @@ export default class TicTacToe extends React.Component {
         </Helmet>
 
         <div className="ttt-result">
-          <p className="ttt-result__item">Sets Played: <span>2</span></p>
-          <p className="ttt-result__item">Player 1 wins: <span>2</span></p>
-          <p className="ttt-result__item">Player 2 wins: <span>2</span></p>
+          <p className="ttt-result__item">
+            Sets Played:
+            <strong>{` ${setsPlayed}`}</strong>
+          </p>
+          <p className="ttt-result__item">
+            Player
+            {` "${player_1.value}" `}
+            wins:
+            <strong>{` ${player_1.wins}`}</strong>
+          </p>
+          <p className="ttt-result__item">
+            Player
+            {` "${player_2.value}" `}
+            wins:
+            <strong>{` ${player_2.wins}`}</strong>
+          </p>
         </div>
 
         {finishedGame ?
-          <h2 className="ttt-title ttt-title--win"><span className="ttt-title__sign">{this.state[playerSign]}</span> is winner. Our congatulations!</h2>
+          <h2 className="ttt-title ttt-title--win">
+            <span className="ttt-title__sign">{this.props[player].value} </span>
+            is winner. Our congatulations!
+          </h2>
           :
-          <h2 className="ttt-title">It is <span className="ttt-title__sign">{this.state[playerSign]}</span> turn.</h2>
+          <h2 className="ttt-title">
+            It is
+            <span className="ttt-title__sign"> {this.props[player].value} </span>
+            turn.
+          </h2>
         }
 
         <div className="ttt-field-wrap">
@@ -140,7 +163,7 @@ export default class TicTacToe extends React.Component {
                 type="button"
                 disabled={item.disabled}
                 key={item.key}
-                onClick={!item.disabled  && !finishedGame && this.handleClick.bind(this, index)}
+                onClick={!item.disabled  && !finishedGame ? this.handleClick.bind(this, index) : undefined}
                 className={`ttt-field__item ${item.className}`}
               >
                 {item.value}
@@ -163,6 +186,6 @@ export default class TicTacToe extends React.Component {
 }
 
 TicTacToe.propTypes = {
-  fieldLength: PropTypes.number
+  fieldLength: PropTypes.number,
+  setsPlayed: PropTypes.number
 };
-//
