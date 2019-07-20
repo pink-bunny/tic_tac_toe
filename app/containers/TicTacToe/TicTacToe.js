@@ -11,7 +11,8 @@ export default class TicTacToe extends React.Component {
       currentPlayer: 'player_x',
       player_x: 'x',
       player_o: 'o',
-      items: []
+      items: [],
+      finishedGame: false
     }
   };
   handleClick(i){
@@ -20,7 +21,8 @@ export default class TicTacToe extends React.Component {
     let currentPlayerName = this.state.currentPlayer
     updatedItemsArr[i] = {
       ...this.state.items[i],
-      value: this.state[currentPlayerName]
+      value: this.state[currentPlayerName],
+      disabled: true
     };
 
     this.setState({
@@ -40,6 +42,7 @@ export default class TicTacToe extends React.Component {
     let verticalArr = [];
     let diagonalTLRB = [];
     let diagonalLBRT = [];
+    let winningArray = [];
 
     // Multidimentional array
     let multiStart = 0;
@@ -74,7 +77,26 @@ export default class TicTacToe extends React.Component {
       el--
     }
 
-    console.log('checkedSign', checkedSign);
+    // Merge winning combination
+    winningArray = [...horizontalArr, ...verticalArr, diagonalTLRB, diagonalLBRT];
+
+    // Define winner
+    let winnerCombination;
+    for(let i=0; i<winningArray.length; i++) {
+      if(winningArray[i].every( (val, i, arr) => val.value === checkedSign )){
+        winnerCombination = winningArray[i];
+      }
+    }
+    // Highlight win combination
+    if (winnerCombination) {
+      for(let i=0; i<winnerCombination.length; i++) {
+        winnerCombination.every( (val, i, arr) => val.className="ttt-field__item--win");
+      }
+      this.setState({
+        ...this.state,
+        finishedGame: true
+      })
+    }
   }
 
   componentWillMount(){
@@ -90,43 +112,52 @@ export default class TicTacToe extends React.Component {
   }
 
   render() {
-    let items = this.state.items;
+    let { items, finishedGame } = this.state;
     let playerSign = this.state.currentPlayer;
 
     return (
-      <article className="ttt">
+      <section className="ttt">
         <Helmet>
           <title>Tic Tac Toe</title>
         </Helmet>
-
-        <h2 className="ttt-title">It is <span className="ttt-title__sign">{this.state[playerSign]}</span> turn.</h2>
-        <div className="ttt-nav">
-          <Link className="ttt-nav__btn" to="/">
-             Step Back
-          </Link>
-          <Link className="ttt-nav__btn" to="/features">
-            Step Forward
-          </Link>
-        </div>
-
-        <div className="ttt-field">
-          {items.map((item, index) =>
-            <div
-              key={item.key}
-              onClick={this.handleClick.bind(this, index)}
-              className="ttt-field__item"
-            >
-              {item.value}
-            </div>
-          )}
-        </div>
 
         <div className="ttt-result">
           <p className="ttt-result__item">Sets Played: <span>2</span></p>
           <p className="ttt-result__item">Player 1 wins: <span>2</span></p>
           <p className="ttt-result__item">Player 2 wins: <span>2</span></p>
         </div>
-      </article>
+
+        {finishedGame ?
+          <h2 className="ttt-title ttt-title--win"><span className="ttt-title__sign">{this.state[playerSign]}</span> is winner. Our congatulations!</h2>
+          :
+          <h2 className="ttt-title">It is <span className="ttt-title__sign">{this.state[playerSign]}</span> turn.</h2>
+        }
+
+        <div className="ttt-field-wrap">
+          <div className="ttt-field">
+            {items.map((item, index) =>
+              <button
+                type="button"
+                disabled={item.disabled}
+                key={item.key}
+                onClick={!item.disabled  && !finishedGame && this.handleClick.bind(this, index)}
+                className={`ttt-field__item ${item.className}`}
+              >
+                {item.value}
+              </button>
+            )}
+          </div>
+
+          <div className="ttt-nav">
+            <Link className="ttt-nav__btn" to="/">
+               Step Back
+            </Link>
+            <Link className="ttt-nav__btn" to="/features">
+              Step Forward
+            </Link>
+          </div>
+        </div>
+      </section>
     );
   }
 }
