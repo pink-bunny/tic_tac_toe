@@ -1,4 +1,7 @@
-import { SAY_HELLO } from './constants';
+import {
+  INCREASE_TOTAL_SETS,
+  INCREASE_PLAYER_WIN
+} from './constants';
 
 // The initial state of the App
 export const initialState = {
@@ -17,11 +20,21 @@ export const initialState = {
 };
 
 function ticTacToeReducer(state = initialState, action) {
+  let winner = action.player;
+  
   switch (action.type) {
-    case SAY_HELLO:
+    case INCREASE_TOTAL_SETS:
       return {
         ...state,
-        txt: action.txt.replace(/@/gi, '')
+        setsPlayed: state.setsPlayed + 1
+      };
+    case INCREASE_PLAYER_WIN:
+      return {
+        ...state,
+        [winner]: {
+          ...state[winner],
+          wins: state[winner].wins + 1
+        }
       };
     default:
       return state;

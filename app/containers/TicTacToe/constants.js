@@ -9,4 +9,5 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
-export const SAY_HELLO = 'boilerplate/TicTacToe/SAY_HELLO';
+export const INCREASE_TOTAL_SETS = 'boilerplate/TicTacToe/INCREASE_TOTAL_SETS';
+export const INCREASE_PLAYER_WIN = 'boilerplate/TicTacToe/INCREASE_PLAYER_WIN';

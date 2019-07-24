@@ -15,18 +15,20 @@
  *    }
  */
 
-import { SAY_HELLO } from './constants';
+import {
+  INCREASE_TOTAL_SETS,
+  INCREASE_PLAYER_WIN
+} from './constants';
 
-/**
- * Changes the input field of the form
- *
- * @param  {txt} txt The new text of the input field
- *
- * @return {object}    An action object with a type of SAY_HELLO
- */
-export function sayHello(txt) {
+export function increaseTotalSets() {
   return {
-    type: SAY_HELLO,
-    txt
+    type: INCREASE_TOTAL_SETS
+  };
+}
+
+export function increasePlayerWin(player) {
+  return {
+    type: INCREASE_PLAYER_WIN,
+    player
   };
 }

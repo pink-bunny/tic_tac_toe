@@ -85,6 +85,7 @@ export default class TicTacToe extends React.Component {
         winnerCombination = winningArray[i];
       }
     }
+    
     // Highlight win combination
     if (winnerCombination) {
       for(let i=0; i<winnerCombination.length; i++) {
@@ -93,7 +94,9 @@ export default class TicTacToe extends React.Component {
       this.setState({
         ...this.state,
         finishedGame: true
-      })
+      });
+      this.props.onIncreaseTotalSets();
+      this.props.onIncreasePlayerWin(currentPlayerName);
     }
   }
 
@@ -115,7 +118,7 @@ export default class TicTacToe extends React.Component {
 
   render() {
     let { items, finishedGame } = this.state;
-    let { setsPlayed, player_1, player_2 } = this.props;
+    let { setsPlayed, player_1, player_2, onIncreaseTotalSets, onIncreasePlayerWin } = this.props;
     let player = this.state.currentPlayer;
 
     return (
@@ -187,5 +190,7 @@ export default class TicTacToe extends React.Component {
 
 TicTacToe.propTypes = {
   fieldLength: PropTypes.number,
-  setsPlayed: PropTypes.number
+  setsPlayed: PropTypes.number,
+  onIncreaseTotalSets: PropTypes.func,
+  onIncreasePlayerWin: PropTypes.func
 };
