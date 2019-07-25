@@ -10,10 +10,33 @@ export default class TicTacToe extends React.Component {
     this.state = {
       currentPlayer: null,
       items: [],
-      finishedGame: false
+      finishedGame: false,
+      draw: false
     }
   };
-  handleClick(i){
+  createInitalArr() {
+    let length = this.props.fieldLength;
+    let arr = [];
+    for (let i=0; i<length; i++) {
+      arr.push({
+        key: i,
+        value: null
+      });
+    }
+    return arr
+  };
+
+  startNewGame() {
+    this.setState({
+      ...this.state,
+      currentPlayer: this.props.currentPlayer,
+      finishedGame: false,
+      draw: false,
+      items: this.createInitalArr()
+    })
+  };
+
+  handleClick(i) {
     // Update items array
     let updatedItemsArr = this.state.items;
     let currentPlayerName = this.state.currentPlayer
@@ -85,7 +108,7 @@ export default class TicTacToe extends React.Component {
         winnerCombination = winningArray[i];
       }
     }
-    
+
     // Highlight win combination
     if (winnerCombination) {
       for(let i=0; i<winnerCombination.length; i++) {
@@ -98,26 +121,27 @@ export default class TicTacToe extends React.Component {
       this.props.onIncreaseTotalSets();
       this.props.onIncreasePlayerWin(currentPlayerName);
     }
+
+    // Draw
+    if (arr.every( (val, i, arr) => val.value )){
+      this.setState({
+        ...this.state,
+        draw: true
+      });
+      this.props.onIncreaseTotalSets();
+    }
   }
 
   componentWillMount(){
-    let length = this.props.fieldLength;
-    let arr = [];
-    for (let i=0; i<length; i++) {
-      arr.push({
-        key: i,
-        value: null
-      });
-    }
     this.setState({
       ...this.state,
       currentPlayer: this.props.currentPlayer,
-      items: arr
+      items: this.createInitalArr()
     })
   }
 
   render() {
-    let { items, finishedGame } = this.state;
+    let { items, finishedGame, draw } = this.state;
     let { setsPlayed, player_1, player_2, onIncreaseTotalSets, onIncreasePlayerWin } = this.props;
     let player = this.state.currentPlayer;
 
@@ -146,20 +170,39 @@ export default class TicTacToe extends React.Component {
           </p>
         </div>
 
-        {finishedGame ?
+        {finishedGame &&
           <h2 className="ttt-title ttt-title--win">
             <span className="ttt-title__sign">{this.props[player].value} </span>
             is winner. Our congatulations!
           </h2>
-          :
+        }
+        {draw &&
+          <h2 className="ttt-title ttt-title--draw">
+            None of the players won.
+          </h2>
+        }
+        {!finishedGame && !draw ?
           <h2 className="ttt-title">
             It is
             <span className="ttt-title__sign"> {this.props[player].value} </span>
             turn.
           </h2>
+          :
+          null
         }
 
         <div className="ttt-field-wrap">
+          {finishedGame || draw ?
+            <button
+              type="button"
+              className="ttt-nav__new-game"
+              onClick={this.startNewGame.bind(this)}
+            >
+              New Game
+            </button>
+            :
+            null
+          }
           <div className="ttt-field">
             {items.map((item, index) =>
               <button
