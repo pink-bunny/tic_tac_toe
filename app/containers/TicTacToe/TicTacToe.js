@@ -64,13 +64,29 @@ export default class TicTacToe extends React.Component {
     let currentStep = this.state.toggledStep - 1;
     let arr = this.state.items;
     arr.map((item) => {
-      console.log('ITEM', item.value)
       if (item.step > currentStep){
         item.visible = false;
       }
     });
 
     if (currentStep >= 0) {
+      this.setState({
+        toggledStep: currentStep,
+        items: arr
+      });
+    };
+  };
+
+  clickForward() {
+    let currentStep = this.state.toggledStep + 1;
+    let arr = this.state.items;
+    arr.map((item) => {
+      if (item.step <= currentStep){
+        item.visible = true;
+      }
+    });
+
+    if (currentStep <= this.state.totalSteps) {
       this.setState({
         toggledStep: currentStep,
         items: arr
@@ -172,7 +188,6 @@ export default class TicTacToe extends React.Component {
           <title>Tic Tac Toe</title>
         </Helmet>
 
-
         <div className="ttt-result">
           <p className="ttt-result__item">
             Sets Played:
@@ -250,6 +265,7 @@ export default class TicTacToe extends React.Component {
             <button
               button="button"
               className="ttt-nav__btn"
+              onClick={this.clickForward.bind(this)}
             >
               Step Forward
             </button>
