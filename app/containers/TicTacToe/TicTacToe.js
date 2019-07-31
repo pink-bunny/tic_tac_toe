@@ -11,7 +11,9 @@ export default class TicTacToe extends React.Component {
       currentPlayer: null,
       items: [],
       finishedGame: false,
-      draw: false
+      draw: false,
+      totalSteps: 0,
+      toggledStep: 0
     }
   };
   createInitalArr() {
@@ -20,7 +22,9 @@ export default class TicTacToe extends React.Component {
     for (let i=0; i<length; i++) {
       arr.push({
         key: i,
-        value: null
+        value: null,
+        visible: true,
+        step: null
       });
     }
     return arr
@@ -28,7 +32,6 @@ export default class TicTacToe extends React.Component {
 
   startNewGame() {
     this.setState({
-      ...this.state,
       currentPlayer: this.props.currentPlayer,
       finishedGame: false,
       draw: false,
@@ -39,19 +42,40 @@ export default class TicTacToe extends React.Component {
   handleClick(i) {
     // Update items array
     let updatedItemsArr = this.state.items;
-    let currentPlayerName = this.state.currentPlayer
+    let currentPlayerName = this.state.currentPlayer;
     updatedItemsArr[i] = {
       ...this.state.items[i],
       value: this.props[currentPlayerName].value,
-      disabled: true
+      disabled: true,
+      step: this.state.totalSteps + 1
     };
 
     this.setState({
-      ...this.state,
       currentPlayer: (currentPlayerName === 'player_1' ? 'player_2' : 'player_1'),
-      items: updatedItemsArr
-    })
-    return this.checkWinner(currentPlayerName);
+      items: updatedItemsArr,
+      totalSteps: this.state.totalSteps + 1,
+      toggledStep: this.state.toggledStep + 1
+    });
+
+    this.checkWinner(currentPlayerName);
+  };
+
+  clickBack() {
+    let currentStep = this.state.toggledStep - 1;
+    let arr = this.state.items;
+    arr.map((item) => {
+      console.log('ITEM', item.value)
+      if (item.step > currentStep){
+        item.visible = false;
+      }
+    });
+
+    if (currentStep >= 0) {
+      this.setState({
+        toggledStep: currentStep,
+        items: arr
+      });
+    };
   };
 
   checkWinner(currentPlayerName) {
@@ -115,7 +139,6 @@ export default class TicTacToe extends React.Component {
         winnerCombination.every( (val, i, arr) => val.className="ttt-field__item--win");
       }
       this.setState({
-        ...this.state,
         finishedGame: true
       });
       this.props.onIncreaseTotalSets();
@@ -125,7 +148,6 @@ export default class TicTacToe extends React.Component {
     // Draw
     if (arr.every( (val, i, arr) => val.value )){
       this.setState({
-        ...this.state,
         draw: true
       });
       this.props.onIncreaseTotalSets();
@@ -134,7 +156,6 @@ export default class TicTacToe extends React.Component {
 
   componentWillMount(){
     this.setState({
-      ...this.state,
       currentPlayer: this.props.currentPlayer,
       items: this.createInitalArr()
     })
@@ -150,6 +171,7 @@ export default class TicTacToe extends React.Component {
         <Helmet>
           <title>Tic Tac Toe</title>
         </Helmet>
+
 
         <div className="ttt-result">
           <p className="ttt-result__item">
@@ -212,18 +234,25 @@ export default class TicTacToe extends React.Component {
                 onClick={!item.disabled  && !finishedGame ? this.handleClick.bind(this, index) : undefined}
                 className={`ttt-field__item ${item.className}`}
               >
-                {item.value}
+                {item.visible && item.value}
               </button>
             )}
           </div>
 
           <div className="ttt-nav">
-            <Link className="ttt-nav__btn" to="/">
+            <button
+              button="button"
+              className="ttt-nav__btn"
+              onClick={this.clickBack.bind(this)}
+            >
                Step Back
-            </Link>
-            <Link className="ttt-nav__btn" to="/features">
+            </button>
+            <button
+              button="button"
+              className="ttt-nav__btn"
+            >
               Step Forward
-            </Link>
+            </button>
           </div>
         </div>
       </section>
