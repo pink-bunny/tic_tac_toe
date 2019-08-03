@@ -18,21 +18,21 @@ const selectTTTSetsPlayed = () => createSelector(
   (ticTacToelState) => ticTacToelState.setsPlayed
 );
 
-const selectTTTPlayer_1 = () => createSelector(
+const selectTTTPlayer1 = () => createSelector(
   selectTicTacToe,
-  (ticTacToelState) => ticTacToelState.player_1
+  (ticTacToelState) => ticTacToelState.player1
 );
 
-const selectTTTPlayer_2 = () => createSelector(
+const selectTTTPlayer2 = () => createSelector(
   selectTicTacToe,
-  (ticTacToelState) => ticTacToelState.player_2
+  (ticTacToelState) => ticTacToelState.player2
 );
 
 export {
   selectTicTacToe,
   selectTTTFieldLength,
   selectTTTSetsPlayed,
-  selectTTTPlayer_1,
-  selectTTTPlayer_2,
+  selectTTTPlayer1,
+  selectTTTPlayer2,
   selectTTTCurrentPlayer,
 };

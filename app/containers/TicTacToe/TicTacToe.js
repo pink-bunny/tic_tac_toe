@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 import './style.scss';
 
 export default class TicTacToe extends React.Component {
@@ -14,12 +13,22 @@ export default class TicTacToe extends React.Component {
       draw: false,
       totalSteps: 0,
       toggledStep: 0
-    }
-  };
+    };
+  }
+
+  componentWillMount() {
+    const { currentPlayer } = this.props;
+    this.setState({
+      currentPlayer,
+      items: this.createInitalArr()
+    });
+  }
+
   createInitalArr() {
-    let length = this.props.fieldLength;
-    let arr = [];
-    for (let i=0; i<length; i++) {
+    const { fieldLength } = this.props;
+    const length = fieldLength;
+    const arr = [];
+    for (let i = 0; i < length; i++) {
       arr.push({
         key: i,
         value: null,
@@ -27,44 +36,48 @@ export default class TicTacToe extends React.Component {
         step: null
       });
     }
-    return arr
-  };
+    return arr;
+  }
 
   startNewGame() {
+    const { currentPlayer } = this.props;
     this.setState({
-      currentPlayer: this.props.currentPlayer,
+      currentPlayer,
       finishedGame: false,
       draw: false,
       items: this.createInitalArr()
-    })
-  };
+    });
+  }
 
   handleClick(i) {
-    // Update items array
-    let updatedItemsArr = this.state.items;
-    let currentPlayerName = this.state.currentPlayer;
+    const {
+      items, currentPlayer, totalSteps, toggledStep
+    } = this.state;
+    const updatedItemsArr = items;
+    const currentPlayerName = currentPlayer;
     updatedItemsArr[i] = {
-      ...this.state.items[i],
+      ...items[i],
       value: this.props[currentPlayerName].value,
       disabled: true,
-      step: this.state.totalSteps + 1
+      step: totalSteps + 1
     };
 
     this.setState({
-      currentPlayer: (currentPlayerName === 'player_1' ? 'player_2' : 'player_1'),
+      currentPlayer: (currentPlayerName === 'player1' ? 'player2' : 'player1'),
       items: updatedItemsArr,
-      totalSteps: this.state.totalSteps + 1,
-      toggledStep: this.state.toggledStep + 1
+      totalSteps: totalSteps + 1,
+      toggledStep: toggledStep + 1
     });
 
     this.checkWinner(currentPlayerName);
-  };
+  }
 
   clickBack() {
-    let currentStep = this.state.toggledStep - 1;
-    let arr = this.state.items;
-    arr.map((item) => {
-      if (item.step > currentStep){
+    const { toggledStep, items } = this.state;
+    const currentStep = toggledStep - 1;
+    const arr = items;
+    arr.forEach((item) => {
+      if (item.step > currentStep) {
         item.visible = false;
       }
     });
@@ -74,41 +87,44 @@ export default class TicTacToe extends React.Component {
         toggledStep: currentStep,
         items: arr
       });
-    };
-  };
+    }
+  }
 
   clickForward() {
-    let currentStep = this.state.toggledStep + 1;
-    let arr = this.state.items;
-    arr.map((item) => {
-      if (item.step <= currentStep){
+    const { toggledStep, items, totalSteps } = this.state;
+    const currentStep = toggledStep + 1;
+    const arr = items;
+    arr.forEach((item) => {
+      if (item.step <= currentStep) {
         item.visible = true;
       }
     });
 
-    if (currentStep <= this.state.totalSteps) {
+    if (currentStep <= totalSteps) {
       this.setState({
         toggledStep: currentStep,
         items: arr
       });
-    };
-  };
+    }
+  }
 
   checkWinner(currentPlayerName) {
-    let checkedSign = this.props[currentPlayerName].value;
-    let stringLength = Math.sqrt(this.props.fieldLength);
-    let arr = this.state.items;
-    let multiArr = [];
+    const { fieldLength } = this.props;
+    const { items } = this.state;
+    const checkedSign = this.props[currentPlayerName].value;
+    const stringLength = Math.sqrt(fieldLength);
+    const arr = items;
+    const multiArr = [];
+    const verticalArr = [];
+    const diagonalTLRB = [];
+    const diagonalLBRT = [];
     let horizontalArr = [];
-    let verticalArr = [];
-    let diagonalTLRB = [];
-    let diagonalLBRT = [];
     let winningArray = [];
 
     // Multidimentional array
     let multiStart = 0;
     let multiEnd = multiStart + stringLength;
-    for (let i=0; i < stringLength; i++) {
+    for (let i = 0; i < stringLength; i++) {
       multiArr.push(arr.slice(multiStart, multiEnd));
       multiStart = multiEnd;
       multiEnd = multiStart + stringLength;
@@ -118,24 +134,24 @@ export default class TicTacToe extends React.Component {
     horizontalArr = multiArr.slice();
 
     // Vertical
-    for (let el=0; el < stringLength; el++) {
-      let subArr = [];
-      for (let r=0; r < stringLength; r++) {
+    for (let el = 0; el < stringLength; el++) {
+      const subArr = [];
+      for (let r = 0; r < stringLength; r++) {
         subArr.push(multiArr[r][el]);
       }
       verticalArr.push(subArr);
     }
 
     // Diagonal top-left/right-bottom
-    for(let i=0; i < stringLength; i++) {
+    for (let i = 0; i < stringLength; i++) {
       diagonalTLRB.push(multiArr[i][i]);
     }
 
     // Diagonal left-bottom/top-right
     let el = stringLength - 1;
-    for(let i=0; i < stringLength; i++) {
+    for (let i = 0; i < stringLength; i++) {
       diagonalLBRT.push(multiArr[i][el]);
-      el--
+      el--;
     }
 
     // Merge winning combination
@@ -143,16 +159,18 @@ export default class TicTacToe extends React.Component {
 
     // Define winner
     let winnerCombination;
-    for(let i=0; i<winningArray.length; i++) {
-      if(winningArray[i].every( (val, i, arr) => val.value === checkedSign )){
+    for (let i = 0; i < winningArray.length; i++) {
+      if (winningArray[i].every((val) => val.value === checkedSign)) {
         winnerCombination = winningArray[i];
       }
     }
 
     // Highlight win combination
     if (winnerCombination) {
-      for(let i=0; i<winnerCombination.length; i++) {
-        winnerCombination.every( (val, i, arr) => val.className="ttt-field__item--win");
+      for (let i = 0; i < winnerCombination.length; i++) {
+        winnerCombination.forEach((item) => {
+          item.className = 'ttt-field__item--win';
+        });
       }
       this.setState({
         finishedGame: true
@@ -162,7 +180,7 @@ export default class TicTacToe extends React.Component {
     }
 
     // Draw
-    if (arr.every( (val, i, arr) => val.value )){
+    if (arr.every((val) => val.value)) {
       this.setState({
         draw: true
       });
@@ -170,17 +188,13 @@ export default class TicTacToe extends React.Component {
     }
   }
 
-  componentWillMount(){
-    this.setState({
-      currentPlayer: this.props.currentPlayer,
-      items: this.createInitalArr()
-    })
-  }
-
   render() {
-    let { items, finishedGame, draw } = this.state;
-    let { setsPlayed, player_1, player_2, onIncreaseTotalSets, onIncreasePlayerWin } = this.props;
-    let player = this.state.currentPlayer;
+    const {
+      items, finishedGame, draw, currentPlayer
+    } = this.state;
+    const {
+      setsPlayed, player1, player2
+    } = this.props;
 
     return (
       <section className="ttt">
@@ -195,41 +209,43 @@ export default class TicTacToe extends React.Component {
           </p>
           <p className="ttt-result__item">
             Player
-            {` "${player_1.value}" `}
+            {` "${player1.value}" `}
             wins:
-            <strong>{` ${player_1.wins}`}</strong>
+            <strong>{` ${player1.wins}`}</strong>
           </p>
           <p className="ttt-result__item">
             Player
-            {` "${player_2.value}" `}
+            {` "${player2.value}" `}
             wins:
-            <strong>{` ${player_2.wins}`}</strong>
+            <strong>{` ${player2.wins}`}</strong>
           </p>
         </div>
 
-        {finishedGame &&
-          <h2 className="ttt-title ttt-title--win">
-            <span className="ttt-title__sign">{this.props[player].value} </span>
-            is winner. Our congatulations!
-          </h2>
-        }
-        {draw &&
-          <h2 className="ttt-title ttt-title--draw">
-            None of the players won.
-          </h2>
-        }
-        {!finishedGame && !draw ?
+        {finishedGame
+          && (
+            <h2 className="ttt-title ttt-title--win">
+              <span className="ttt-title__sign">{this.props[currentPlayer].value} </span>
+              is winner. Our congatulations!
+            </h2>
+          )}
+        {draw
+          && (
+            <h2 className="ttt-title ttt-title--draw">
+              None of the players won.
+            </h2>
+          )}
+        {!finishedGame && !draw ? (
           <h2 className="ttt-title">
             It is
-            <span className="ttt-title__sign"> {this.props[player].value} </span>
+            <span className="ttt-title__sign"> {this.props[currentPlayer].value} </span>
             turn.
           </h2>
-          :
-          null
+        )
+          : null
         }
 
         <div className="ttt-field-wrap">
-          {finishedGame || draw ?
+          {finishedGame || draw ? (
             <button
               type="button"
               className="ttt-nav__new-game"
@@ -237,33 +253,32 @@ export default class TicTacToe extends React.Component {
             >
               New Game
             </button>
-            :
-            null
+          ) : null
           }
           <div className="ttt-field">
-            {items.map((item, index) =>
+            {items.map((item, index) => (
               <button
                 type="button"
                 disabled={item.disabled}
                 key={item.key}
-                onClick={!item.disabled  && !finishedGame ? this.handleClick.bind(this, index) : undefined}
+                onClick={!item.disabled && !finishedGame ? this.handleClick.bind(this, index) : undefined}
                 className={`ttt-field__item ${item.className}`}
               >
                 {item.visible && item.value}
               </button>
-            )}
+            ))}
           </div>
 
           <div className="ttt-nav">
             <button
-              button="button"
+              type="button"
               className="ttt-nav__btn"
               onClick={this.clickBack.bind(this)}
             >
                Step Back
             </button>
             <button
-              button="button"
+              type="button"
               className="ttt-nav__btn"
               onClick={this.clickForward.bind(this)}
             >
@@ -277,6 +292,9 @@ export default class TicTacToe extends React.Component {
 }
 
 TicTacToe.propTypes = {
+  player1: PropTypes.object,
+  player2: PropTypes.object,
+  currentPlayer: PropTypes.string,
   fieldLength: PropTypes.number,
   setsPlayed: PropTypes.number,
   onIncreaseTotalSets: PropTypes.func,

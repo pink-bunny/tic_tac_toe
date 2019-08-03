@@ -3,8 +3,8 @@ import { createStructuredSelector } from 'reselect';
 import {
   selectTTTFieldLength,
   selectTTTSetsPlayed,
-  selectTTTPlayer_1,
-  selectTTTPlayer_2,
+  selectTTTPlayer1,
+  selectTTTPlayer2,
   selectTTTCurrentPlayer
 } from './selectors';
 import {
@@ -22,8 +22,8 @@ const mapStateToProps = createStructuredSelector({
   fieldLength: selectTTTFieldLength(),
   currentPlayer: selectTTTCurrentPlayer(),
   setsPlayed: selectTTTSetsPlayed(),
-  player_1: selectTTTPlayer_1(),
-  player_2: selectTTTPlayer_2(),
+  player1: selectTTTPlayer1(),
+  player2: selectTTTPlayer2(),
 });
 
 

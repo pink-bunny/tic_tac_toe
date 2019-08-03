@@ -7,12 +7,12 @@ import {
 export const initialState = {
   fieldLength: 9,
   winner: null,
-  currentPlayer: 'player_1',
-  player_1: {
+  currentPlayer: 'player1',
+  player1: {
     value: 'x',
     wins: 0
   },
-  player_2: {
+  player2: {
     value: 'o',
     wins: 0
   },
@@ -20,8 +20,7 @@ export const initialState = {
 };
 
 function ticTacToeReducer(state = initialState, action) {
-  let winner = action.player;
-  
+  const winner = action.player;
   switch (action.type) {
     case INCREASE_TOTAL_SETS:
       return {

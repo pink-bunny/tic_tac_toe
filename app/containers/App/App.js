@@ -13,7 +13,6 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import TicTacToe from 'containers/TicTacToe/Loadable';
-import Header from 'components/Header';
 import './style.scss';
 
 const App = () => (
