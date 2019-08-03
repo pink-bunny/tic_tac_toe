@@ -11,7 +11,7 @@ const NewGameBtn = ({ onStartNewGame }) => (
   >
     New Game
   </button>
-)
+);
 
 NewGameBtn.propTypes = {
   onStartNewGame: PropTypes.func

@@ -20,7 +20,7 @@ const Nav = ({ onBack, onForward }) => (
       Step Forward
     </button>
   </div>
-)
+);
 
 Nav.propTypes = {
   onBack: PropTypes.func,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Nav from '../../components/TicTacToe/Nav';
 import NewGameBtn from '../../components/TicTacToe/NewGameBtn';
+import InfoTitle from '../../components/TicTacToe/InfoTitle';
 import './style.scss';
 
 export default class TicTacToe extends React.Component {
@@ -225,23 +226,23 @@ export default class TicTacToe extends React.Component {
 
         {finishedGame
           && (
-            <h2 className="ttt-title ttt-title--win">
+            <InfoTitle className="ttt-title--win">
               <span className="ttt-title__sign">{this.props[currentPlayer].value} </span>
               is winner. Our congatulations!
-            </h2>
+            </InfoTitle>
           )}
         {draw
           && (
-            <h2 className="ttt-title ttt-title--draw">
+            <InfoTitle className="ttt-title--draw">
               None of the players won.
-            </h2>
+            </InfoTitle>
           )}
         {!finishedGame && !draw ? (
-          <h2 className="ttt-title">
+          <InfoTitle>
             It is
             <span className="ttt-title__sign"> {this.props[currentPlayer].value} </span>
             turn.
-          </h2>
+          </InfoTitle>
         )
           : null
         }
