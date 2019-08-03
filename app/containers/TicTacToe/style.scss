@@ -3,15 +3,32 @@
   background-size: cover;
 }
 .ttt {
-  width: max-content;
+  padding-top: 60px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
+}
+.ttt-title {
+  text-align: center;
+  margin-top: 0;
+  font-weight: 400;
+}
+.ttt-title--win {
+  color: #41ADDD;
+}
+.ttt-title--draw {
+  color: #dd4141;
+}
+.ttt-title__sign {
+  font-weight: bold;
+  text-transform: uppercase;
 }
 .ttt-nav {
   display: flex;
   justify-content: space-between;
 }
 .ttt-nav__btn {
-  padding: 0.25em 1em;
+  padding: 0.5em 1em;
   margin: 1em 0;
   text-decoration: none;
   border-radius: 4px;
@@ -20,10 +37,11 @@
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
-  border: 2px solid #41ADDD;
   color: #41ADDD;
   width: 50%;
   text-align: center;
+  background-color: rgba(16, 42, 64, 0.5);
+  font-weight: 400;
   &:first-child {
     margin-right: 1em;
   }
@@ -32,11 +50,42 @@
     color: #FFF;
   }
 }
+.ttt-nav__new-game {
+  width: 100%;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  background-color: rgba(65, 173, 221, 0.8);
+  font-weight: 400;
+}
+.ttt-field-wrap {
+  width: max-content;
+  margin: 0 auto;
+}
 .ttt-result {
-  text-align: left;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(16, 42, 64, 0.5);
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: lighter;
+  letter-spacing: 1px;
 }
 .ttt-result__item {
-  margin-bottom: 8px;
+  flex-grow: 1;
+  margin: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .ttt-field {
@@ -47,6 +96,24 @@
   height: 300px;
 }
 .ttt-field__item {
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  text-transform: uppercase;
   border: 1px solid rgba(255, 255, 255, 0.75);
   background-color: rgba(16, 42, 64, 0.75);
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+.ttt-field__item--win {
+  background-color: rgba(65, 173, 221, 0.65);
+  font-weight: bold;
 }
