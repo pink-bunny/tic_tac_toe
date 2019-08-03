@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import Nav from '../../components/TicTacToe/Nav';
 import './style.scss';
 
 export default class TicTacToe extends React.Component {
@@ -72,7 +73,7 @@ export default class TicTacToe extends React.Component {
     this.checkWinner(currentPlayerName);
   }
 
-  clickBack() {
+  clickBack = () => {
     const { toggledStep, items } = this.state;
     const currentStep = toggledStep - 1;
     const arr = items;
@@ -90,7 +91,7 @@ export default class TicTacToe extends React.Component {
     }
   }
 
-  clickForward() {
+  clickForward = () => {
     const { toggledStep, items, totalSteps } = this.state;
     const currentStep = toggledStep + 1;
     const arr = items;
@@ -269,22 +270,7 @@ export default class TicTacToe extends React.Component {
             ))}
           </div>
 
-          <div className="ttt-nav">
-            <button
-              type="button"
-              className="ttt-nav__btn"
-              onClick={this.clickBack.bind(this)}
-            >
-               Step Back
-            </button>
-            <button
-              type="button"
-              className="ttt-nav__btn"
-              onClick={this.clickForward.bind(this)}
-            >
-              Step Forward
-            </button>
-          </div>
+          <Nav onBack={this.clickBack} onForward={this.clickForward} />
         </div>
       </section>
     );
