@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import Nav from '../../components/TicTacToe/Nav';
+import NewGameBtn from '../../components/TicTacToe/NewGameBtn';
 import './style.scss';
 
 export default class TicTacToe extends React.Component {
@@ -40,7 +41,7 @@ export default class TicTacToe extends React.Component {
     return arr;
   }
 
-  startNewGame() {
+  startNewGame = () => {
     const { currentPlayer } = this.props;
     this.setState({
       currentPlayer,
@@ -247,13 +248,7 @@ export default class TicTacToe extends React.Component {
 
         <div className="ttt-field-wrap">
           {finishedGame || draw ? (
-            <button
-              type="button"
-              className="ttt-nav__new-game"
-              onClick={this.startNewGame.bind(this)}
-            >
-              New Game
-            </button>
+            <NewGameBtn onStartNewGame={this.startNewGame} />
           ) : null
           }
           <div className="ttt-field">
