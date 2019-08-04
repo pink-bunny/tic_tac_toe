@@ -12,24 +12,6 @@
   width: max-content;
   margin: 0 auto;
 }
-.ttt-result {
-  position: fixed;
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 12px;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(16, 42, 64, 0.5);
-  color: rgba(255, 255, 255, 0.75);
-  font-weight: lighter;
-  letter-spacing: 1px;
-}
-.ttt-result__item {
-  flex-grow: 1;
-  margin: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
 .ttt-field {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

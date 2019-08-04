@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 import Nav from '../../components/TicTacToe/Nav';
 import NewGameBtn from '../../components/TicTacToe/NewGameBtn';
 import InfoTitle from '../../components/TicTacToe/InfoTitle';
+import ResultsPanel from '../../components/TicTacToe/ResultsPanel';
 import './style.scss';
 
 export default class TicTacToe extends React.Component {
@@ -205,24 +206,7 @@ export default class TicTacToe extends React.Component {
           <title>Tic Tac Toe</title>
         </Helmet>
 
-        <div className="ttt-result">
-          <p className="ttt-result__item">
-            Sets Played:
-            <strong>{` ${setsPlayed}`}</strong>
-          </p>
-          <p className="ttt-result__item">
-            Player
-            {` "${player1.value}" `}
-            wins:
-            <strong>{` ${player1.wins}`}</strong>
-          </p>
-          <p className="ttt-result__item">
-            Player
-            {` "${player2.value}" `}
-            wins:
-            <strong>{` ${player2.wins}`}</strong>
-          </p>
-        </div>
+        <ResultsPanel setsPlayed={setsPlayed} player1={player1} player2={player2} />
 
         {finishedGame
           && (
