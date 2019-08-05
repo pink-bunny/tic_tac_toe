@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+import Nav from '../../components/TicTacToe/Nav';
+import NewGameBtn from '../../components/TicTacToe/NewGameBtn';
+import InfoTitle from '../../components/TicTacToe/InfoTitle';
+import ResultsPanel from '../../components/TicTacToe/ResultsPanel';
+import FieldCell from '../../components/TicTacToe/FieldCell';
 import './style.scss';
 
 export default class TicTacToe extends React.Component {
@@ -24,6 +29,52 @@ export default class TicTacToe extends React.Component {
     });
   }
 
+  startNewGame = () => {
+    const { currentPlayer } = this.props;
+    this.setState({
+      currentPlayer,
+      finishedGame: false,
+      draw: false,
+      items: this.createInitalArr()
+    });
+  }
+
+  clickBack = () => {
+    const { toggledStep, items } = this.state;
+    const currentStep = toggledStep - 1;
+    const arr = items;
+    arr.forEach((item) => {
+      if (item.step > currentStep) {
+        item.visible = false;
+      }
+    });
+
+    if (currentStep >= 0) {
+      this.setState({
+        toggledStep: currentStep,
+        items: arr
+      });
+    }
+  }
+
+  clickForward = () => {
+    const { toggledStep, items, totalSteps } = this.state;
+    const currentStep = toggledStep + 1;
+    const arr = items;
+    arr.forEach((item) => {
+      if (item.step <= currentStep) {
+        item.visible = true;
+      }
+    });
+
+    if (currentStep <= totalSteps) {
+      this.setState({
+        toggledStep: currentStep,
+        items: arr
+      });
+    }
+  }
+
   createInitalArr() {
     const { fieldLength } = this.props;
     const length = fieldLength;
@@ -33,20 +84,11 @@ export default class TicTacToe extends React.Component {
         key: i,
         value: null,
         visible: true,
-        step: null
+        step: null,
+        className: ''
       });
     }
     return arr;
-  }
-
-  startNewGame() {
-    const { currentPlayer } = this.props;
-    this.setState({
-      currentPlayer,
-      finishedGame: false,
-      draw: false,
-      items: this.createInitalArr()
-    });
   }
 
   handleClick(i) {
@@ -70,42 +112,6 @@ export default class TicTacToe extends React.Component {
     });
 
     this.checkWinner(currentPlayerName);
-  }
-
-  clickBack() {
-    const { toggledStep, items } = this.state;
-    const currentStep = toggledStep - 1;
-    const arr = items;
-    arr.forEach((item) => {
-      if (item.step > currentStep) {
-        item.visible = false;
-      }
-    });
-
-    if (currentStep >= 0) {
-      this.setState({
-        toggledStep: currentStep,
-        items: arr
-      });
-    }
-  }
-
-  clickForward() {
-    const { toggledStep, items, totalSteps } = this.state;
-    const currentStep = toggledStep + 1;
-    const arr = items;
-    arr.forEach((item) => {
-      if (item.step <= currentStep) {
-        item.visible = true;
-      }
-    });
-
-    if (currentStep <= totalSteps) {
-      this.setState({
-        toggledStep: currentStep,
-        items: arr
-      });
-    }
   }
 
   checkWinner(currentPlayerName) {
@@ -173,7 +179,8 @@ export default class TicTacToe extends React.Component {
         });
       }
       this.setState({
-        finishedGame: true
+        finishedGame: true,
+        currentPlayer: currentPlayerName
       });
       this.props.onIncreaseTotalSets();
       this.props.onIncreasePlayerWin(currentPlayerName);
@@ -202,89 +209,50 @@ export default class TicTacToe extends React.Component {
           <title>Tic Tac Toe</title>
         </Helmet>
 
-        <div className="ttt-result">
-          <p className="ttt-result__item">
-            Sets Played:
-            <strong>{` ${setsPlayed}`}</strong>
-          </p>
-          <p className="ttt-result__item">
-            Player
-            {` "${player1.value}" `}
-            wins:
-            <strong>{` ${player1.wins}`}</strong>
-          </p>
-          <p className="ttt-result__item">
-            Player
-            {` "${player2.value}" `}
-            wins:
-            <strong>{` ${player2.wins}`}</strong>
-          </p>
-        </div>
+        <ResultsPanel setsPlayed={setsPlayed} player1={player1} player2={player2} />
 
         {finishedGame
           && (
-            <h2 className="ttt-title ttt-title--win">
+            <InfoTitle className="ttt-title--win">
               <span className="ttt-title__sign">{this.props[currentPlayer].value} </span>
               is winner. Our congatulations!
-            </h2>
+            </InfoTitle>
           )}
         {draw
           && (
-            <h2 className="ttt-title ttt-title--draw">
+            <InfoTitle className="ttt-title--draw">
               None of the players won.
-            </h2>
+            </InfoTitle>
           )}
         {!finishedGame && !draw ? (
-          <h2 className="ttt-title">
+          <InfoTitle>
             It is
             <span className="ttt-title__sign"> {this.props[currentPlayer].value} </span>
             turn.
-          </h2>
+          </InfoTitle>
         )
           : null
         }
 
         <div className="ttt-field-wrap">
           {finishedGame || draw ? (
-            <button
-              type="button"
-              className="ttt-nav__new-game"
-              onClick={this.startNewGame.bind(this)}
-            >
-              New Game
-            </button>
+            <NewGameBtn onStartNewGame={this.startNewGame} />
           ) : null
           }
           <div className="ttt-field">
             {items.map((item, index) => (
-              <button
-                type="button"
-                disabled={item.disabled}
+              <FieldCell
                 key={item.key}
-                onClick={!item.disabled && !finishedGame ? this.handleClick.bind(this, index) : undefined}
-                className={`ttt-field__item ${item.className}`}
-              >
-                {item.visible && item.value}
-              </button>
+                disabled={item.disabled}
+                visible={item.visible}
+                value={item.value}
+                className={item.className}
+                onHandleClick={() => this.handleClick(index)}
+              />
             ))}
           </div>
 
-          <div className="ttt-nav">
-            <button
-              type="button"
-              className="ttt-nav__btn"
-              onClick={this.clickBack.bind(this)}
-            >
-               Step Back
-            </button>
-            <button
-              type="button"
-              className="ttt-nav__btn"
-              onClick={this.clickForward.bind(this)}
-            >
-              Step Forward
-            </button>
-          </div>
+          <Nav onBack={this.clickBack} onForward={this.clickForward} />
         </div>
       </section>
     );
