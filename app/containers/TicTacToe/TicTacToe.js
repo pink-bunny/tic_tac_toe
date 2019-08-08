@@ -99,7 +99,7 @@ export default class TicTacToe extends React.Component {
     const currentPlayerName = currentPlayer;
     updatedItemsArr[i] = {
       ...items[i],
-      value: this.props[currentPlayerName].value,
+      value: this.props[currentPlayerName].value, // eslint-disable-line
       disabled: true,
       step: totalSteps + 1
     };
@@ -117,7 +117,7 @@ export default class TicTacToe extends React.Component {
   checkWinner(currentPlayerName) {
     const { fieldLength } = this.props;
     const { items } = this.state;
-    const checkedSign = this.props[currentPlayerName].value;
+    const checkedSign = this.props[currentPlayerName].value; // eslint-disable-line
     const stringLength = Math.sqrt(fieldLength);
     const arr = items;
     const multiArr = [];
@@ -182,8 +182,8 @@ export default class TicTacToe extends React.Component {
         finishedGame: true,
         currentPlayer: currentPlayerName
       });
-      this.props.onIncreaseTotalSets();
-      this.props.onIncreasePlayerWin(currentPlayerName);
+      this.props.onIncreaseTotalSets(); // eslint-disable-line
+      this.props.onIncreasePlayerWin(currentPlayerName); // eslint-disable-line
     }
 
     // Draw
@@ -191,7 +191,7 @@ export default class TicTacToe extends React.Component {
       this.setState({
         draw: true
       });
-      this.props.onIncreaseTotalSets();
+      this.props.onIncreaseTotalSets(); // eslint-disable-line
     }
   }
 
@@ -214,7 +214,10 @@ export default class TicTacToe extends React.Component {
         {finishedGame
           && (
             <InfoTitle className="ttt-title--win">
-              <span className="ttt-title__sign">{this.props[currentPlayer].value} </span>
+              <span className="ttt-title__sign">
+                {/* eslint-disable-next-line */}
+                {this.props[currentPlayer].value}
+              </span>
               is winner. Our congatulations!
             </InfoTitle>
           )}
@@ -227,7 +230,10 @@ export default class TicTacToe extends React.Component {
         {!finishedGame && !draw ? (
           <InfoTitle>
             It is
-            <span className="ttt-title__sign"> {this.props[currentPlayer].value} </span>
+            <span className="ttt-title__sign">
+              {/* eslint-disable-next-line */}
+              {` ${this.props[currentPlayer].value} `}
+            </span>
             turn.
           </InfoTitle>
         )
