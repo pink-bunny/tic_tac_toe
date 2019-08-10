@@ -254,7 +254,7 @@ export default class TicTacToe extends React.Component {
                 visible={item.visible}
                 value={item.value}
                 className={item.className}
-                onHandleClick={() => this.handleClick(index)}
+                onHandleClick={!item.disabled && !finishedGame ? () => this.handleClick(index) : undefined}
               />
             ))}
           </div>
