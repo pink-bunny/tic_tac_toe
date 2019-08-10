@@ -34,5 +34,5 @@ export {
   selectTTTSetsPlayed,
   selectTTTPlayer1,
   selectTTTPlayer2,
-  selectTTTCurrentPlayer,
+  selectTTTCurrentPlayer
 };
