@@ -97,9 +97,10 @@ export default class TicTacToe extends React.Component {
     } = this.state;
     const updatedItemsArr = items;
     const currentPlayerName = currentPlayer;
+    const { [currentPlayerName]: hcCurrentPlayerName } = this.props;
     updatedItemsArr[i] = {
       ...items[i],
-      value: this.props[currentPlayerName].value,
+      value: hcCurrentPlayerName.value,
       disabled: true,
       step: totalSteps + 1
     };
@@ -115,9 +116,11 @@ export default class TicTacToe extends React.Component {
   }
 
   checkWinner(currentPlayerName) {
-    const { fieldLength } = this.props;
+    const {
+      fieldLength, [currentPlayerName]: cwCurrentPlayerName, onIncreaseTotalSets, onIncreasePlayerWin
+    } = this.props;
     const { items } = this.state;
-    const checkedSign = this.props[currentPlayerName].value;
+    const checkedSign = cwCurrentPlayerName.value;
     const stringLength = Math.sqrt(fieldLength);
     const arr = items;
     const multiArr = [];
@@ -182,8 +185,8 @@ export default class TicTacToe extends React.Component {
         finishedGame: true,
         currentPlayer: currentPlayerName
       });
-      this.props.onIncreaseTotalSets();
-      this.props.onIncreasePlayerWin(currentPlayerName);
+      onIncreaseTotalSets();
+      onIncreasePlayerWin(currentPlayerName);
     }
 
     // Draw
@@ -191,7 +194,7 @@ export default class TicTacToe extends React.Component {
       this.setState({
         draw: true
       });
-      this.props.onIncreaseTotalSets();
+      onIncreaseTotalSets();
     }
   }
 
@@ -200,7 +203,7 @@ export default class TicTacToe extends React.Component {
       items, finishedGame, draw, currentPlayer
     } = this.state;
     const {
-      setsPlayed, player1, player2
+      setsPlayed, player1, player2, [currentPlayer]: definedCurrentPlayer
     } = this.props;
 
     return (
@@ -214,7 +217,9 @@ export default class TicTacToe extends React.Component {
         {finishedGame
           && (
             <InfoTitle className="ttt-title--win">
-              <span className="ttt-title__sign">{this.props[currentPlayer].value} </span>
+              <span className="ttt-title__sign">
+                {`${definedCurrentPlayer.value} `}
+              </span>
               is winner. Our congatulations!
             </InfoTitle>
           )}
@@ -227,7 +232,9 @@ export default class TicTacToe extends React.Component {
         {!finishedGame && !draw ? (
           <InfoTitle>
             It is
-            <span className="ttt-title__sign"> {this.props[currentPlayer].value} </span>
+            <span className="ttt-title__sign">
+              {` ${definedCurrentPlayer.value} `}
+            </span>
             turn.
           </InfoTitle>
         )
@@ -247,7 +254,7 @@ export default class TicTacToe extends React.Component {
                 visible={item.visible}
                 value={item.value}
                 className={item.className}
-                onHandleClick={() => this.handleClick(index)}
+                onHandleClick={!item.disabled && !finishedGame ? () => this.handleClick(index) : undefined}
               />
             ))}
           </div>
