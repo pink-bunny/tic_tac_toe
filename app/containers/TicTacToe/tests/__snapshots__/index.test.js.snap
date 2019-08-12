@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicTacToe /> <Nav /> correct HTML 1`] = `
+<div
+  className="ttt-nav"
+>
+  <button
+    className="ttt-nav__btn"
+    onClick={[Function]}
+    type="button"
+  >
+    Step Back
+  </button>
+  <button
+    className="ttt-nav__btn"
+    onClick={[Function]}
+    type="button"
+  >
+    Step Forward
+  </button>
+</div>
+`;
