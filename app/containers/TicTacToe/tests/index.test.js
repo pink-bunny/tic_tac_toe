@@ -32,7 +32,7 @@ describe.only('<TicTacToe />', () => {
       expect(renderedComponent.find(Nav).length).toBe(1);
     });
 
-    it('component has orrect HTML', () => {
+    it('component has correct HTML', () => {
       const tree = renderer
         .create(<Nav onBack={() => {}} onForward={() => {}} />)
         .toJSON();

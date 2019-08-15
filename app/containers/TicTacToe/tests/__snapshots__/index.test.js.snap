@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicTacToe /> <Nav /> correct HTML 1`] = `
+exports[`<TicTacToe /> <Nav /> component has correct HTML 1`] = `
 <div
   className="ttt-nav"
 >
