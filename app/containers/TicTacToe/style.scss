@@ -29,12 +29,12 @@
   text-transform: uppercase;
   border: 1px solid rgba(255, 255, 255, 0.75);
   background-color: rgba(16, 42, 64, 0.75);
-  cursor: pointer;
+  cursor: not-allowed;
+  &:empty {
+    cursor: pointer;
+  }
   &:focus {
     outline: none;
-  }
-  &:disabled {
-    cursor: not-allowed;
   }
 }
 .ttt-field__item--win {
