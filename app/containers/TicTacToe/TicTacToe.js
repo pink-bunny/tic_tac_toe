@@ -15,6 +15,7 @@ export default class TicTacToe extends React.Component {
       currentPlayer: null,
       items: [],
       finishedGame: false,
+      stepsList: [],
       totalSteps: 0,
       toggledStep: 0
     };
@@ -24,7 +25,10 @@ export default class TicTacToe extends React.Component {
     const { currentPlayer } = this.props;
     this.setState({
       currentPlayer,
-      items: this.createInitalArr()
+      items: this.createInitalArr(),
+      stepsList: [
+        this.createInitalArr()
+      ]
     });
   }
 
@@ -34,20 +38,18 @@ export default class TicTacToe extends React.Component {
       currentPlayer,
       items: this.createInitalArr(),
       finishedGame: false,
+      stepsList: [
+        this.createInitalArr()
+      ],
       totalSteps: 0,
       toggledStep: 0
     });
   }
 
   clickBack = () => {
-    const { toggledStep, items } = this.state;
+    const { toggledStep, stepsList } = this.state;
     const currentStep = toggledStep - 1;
-    const arr = items;
-    arr.forEach((item) => {
-      if (item.step > currentStep) {
-        item.visible = false;
-      }
-    });
+    const arr = stepsList[currentStep];
 
     if (currentStep >= 0) {
       this.setState({
@@ -58,14 +60,9 @@ export default class TicTacToe extends React.Component {
   }
 
   clickForward = () => {
-    const { toggledStep, items, totalSteps } = this.state;
+    const { toggledStep, totalSteps, stepsList } = this.state;
     const currentStep = toggledStep + 1;
-    const arr = items;
-    arr.forEach((item) => {
-      if (item.step <= currentStep) {
-        item.visible = true;
-      }
-    });
+    const arr = stepsList[currentStep];
 
     if (currentStep <= totalSteps) {
       this.setState({
@@ -77,14 +74,11 @@ export default class TicTacToe extends React.Component {
 
   createInitalArr() {
     const { fieldLength } = this.props;
-    const length = fieldLength;
     const arr = [];
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < fieldLength; i++) {
       arr.push({
         key: i,
         value: null,
-        visible: true,
-        step: null,
         className: ''
       });
     }
@@ -93,7 +87,7 @@ export default class TicTacToe extends React.Component {
 
   handleClick(i) {
     const {
-      items, currentPlayer, totalSteps, toggledStep
+      items, currentPlayer, totalSteps, toggledStep, stepsList
     } = this.state;
     const currentPlayerName = currentPlayer;
     const { [currentPlayerName]: hcCurrentPlayerName } = this.props;
@@ -103,10 +97,13 @@ export default class TicTacToe extends React.Component {
       value: hcCurrentPlayerName.value,
       step: totalSteps + 1
     };
+    const stepsListUpdated = [...stepsList];
+    stepsListUpdated.push(updatedItemsArr);
 
     this.setState({
       currentPlayer: (currentPlayerName === 'player1' ? 'player2' : 'player1'),
       items: updatedItemsArr,
+      stepsList: stepsListUpdated,
       totalSteps: totalSteps + 1,
       toggledStep: toggledStep + 1
     }, () => {
