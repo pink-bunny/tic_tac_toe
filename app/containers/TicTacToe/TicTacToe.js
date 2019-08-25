@@ -53,6 +53,7 @@ export default class TicTacToe extends React.Component {
 
     if (currentStep >= 0) {
       this.setState({
+        currentPlayer: (toggledStep % 2 === 0) ? 'player2' : 'player1',
         toggledStep: currentStep,
         items: arr
       });
@@ -66,6 +67,7 @@ export default class TicTacToe extends React.Component {
 
     if (currentStep <= totalSteps) {
       this.setState({
+        currentPlayer: (toggledStep % 2 === 0) ? 'player2' : 'player1',
         toggledStep: currentStep,
         items: arr
       });
@@ -193,12 +195,12 @@ export default class TicTacToe extends React.Component {
 
   render() {
     const {
-      items, finishedGame, totalSteps, currentPlayer
+      items, finishedGame, totalSteps, toggledStep, currentPlayer
     } = this.state;
     const {
       setsPlayed, player1, player2, [currentPlayer]: definedCurrentPlayer, fieldLength
     } = this.props;
-    const calcDraw = totalSteps === fieldLength;
+    const calcDraw = toggledStep === totalSteps &&  totalSteps === fieldLength;
 
     return (
       <section className="ttt">
