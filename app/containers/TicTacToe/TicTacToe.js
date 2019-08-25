@@ -32,8 +32,10 @@ export default class TicTacToe extends React.Component {
     const { currentPlayer } = this.props;
     this.setState({
       currentPlayer,
+      items: this.createInitalArr(),
       finishedGame: false,
-      items: this.createInitalArr()
+      totalSteps: 0,
+      toggledStep: 0
     });
   }
 
@@ -93,11 +95,11 @@ export default class TicTacToe extends React.Component {
     const {
       items, currentPlayer, totalSteps, toggledStep
     } = this.state;
-    const updatedItemsArr = items;
     const currentPlayerName = currentPlayer;
     const { [currentPlayerName]: hcCurrentPlayerName } = this.props;
+    const updatedItemsArr = [...items];
     updatedItemsArr[i] = {
-      ...items[i],
+      ...updatedItemsArr[i],
       value: hcCurrentPlayerName.value,
       step: totalSteps + 1
     };
@@ -107,9 +109,9 @@ export default class TicTacToe extends React.Component {
       items: updatedItemsArr,
       totalSteps: totalSteps + 1,
       toggledStep: toggledStep + 1
+    }, () => {
+      this.checkWinner(currentPlayerName);
     });
-
-    this.checkWinner(currentPlayerName);
   }
 
   checkWinner(currentPlayerName) {
