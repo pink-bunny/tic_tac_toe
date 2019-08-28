@@ -8,9 +8,9 @@ const selectTTTFieldLength = () => createSelector(
   (ticTacToelState) => ticTacToelState.fieldLength
 );
 
-const selectTTTCurrentPlayer = () => createSelector(
+const selectTTTDefaultPlayer = () => createSelector(
   selectTicTacToe,
-  (ticTacToelState) => ticTacToelState.currentPlayer
+  (ticTacToelState) => ticTacToelState.defaultPlayer
 );
 
 const selectTTTSetsPlayed = () => createSelector(
@@ -34,5 +34,5 @@ export {
   selectTTTSetsPlayed,
   selectTTTPlayer1,
   selectTTTPlayer2,
-  selectTTTCurrentPlayer
+  selectTTTDefaultPlayer
 };

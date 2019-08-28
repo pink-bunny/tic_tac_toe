@@ -2,6 +2,15 @@
   display: flex;
   justify-content: space-between;
 }
+.ttt-nav--disabled .ttt-nav__btn {
+  cursor: not-allowed;
+  background-color: rgba(211, 211, 211, 0.7);
+  color: #7492aa;
+  &:active {
+    background-color: rgba(211, 211, 211, 0.7);
+    color: #7492aa;
+  }
+}
 .ttt-nav__btn {
   padding: 0.5em 1em;
   margin: 1em 0;
@@ -12,11 +21,12 @@
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 16px;
-  color: #41ADDD;
+  color: #d6dfe8;
   width: 50%;
   text-align: center;
   background-color: rgba(16, 42, 64, 0.5);
   font-weight: 400;
+  border: none;
   &:first-child {
     margin-right: 1em;
   }

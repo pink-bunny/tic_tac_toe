@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import './style.scss';
 
-const Nav = ({ onBack, onForward }) => (
-  <div className="ttt-nav">
+const Nav = ({ onBack, onForward, disabled }) => (
+  <div className={classNames('ttt-nav', { 'ttt-nav--disabled': disabled })}>
     <button
       type="button"
       className="ttt-nav__btn"
@@ -23,6 +24,7 @@ const Nav = ({ onBack, onForward }) => (
 );
 
 Nav.propTypes = {
+  disabled: PropTypes.bool,
   onBack: PropTypes.func,
   onForward: PropTypes.func
 };

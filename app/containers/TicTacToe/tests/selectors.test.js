@@ -4,7 +4,7 @@ import {
   selectTTTSetsPlayed,
   selectTTTPlayer1,
   selectTTTPlayer2,
-  selectTTTCurrentPlayer
+  selectTTTDefaultPlayer
 } from '../selectors';
 
 describe('selectTicTacToe', () => {
@@ -69,15 +69,15 @@ describe('selectTTTPlayer2', () => {
   });
 });
 
-describe('selectTTTCurrentPlayer', () => {
-  const tttCurrentPlayer = selectTTTCurrentPlayer();
-  it('should select TicTacToe current player', () => {
-    const currentPlayer = 'player2';
+describe('selectTTTDefaultPlayer', () => {
+  const tttDefaultPlayer = selectTTTDefaultPlayer();
+  it('should select TicTacToe default player', () => {
+    const defaultPlayer = 'player2';
     const mockedState = {
       ticTacToe: {
-        currentPlayer
+        defaultPlayer
       },
     };
-    expect(tttCurrentPlayer(mockedState)).toEqual(currentPlayer);
+    expect(tttDefaultPlayer(mockedState)).toEqual(defaultPlayer);
   });
 });
