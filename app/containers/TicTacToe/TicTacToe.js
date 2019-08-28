@@ -97,7 +97,7 @@ export default class TicTacToe extends React.Component {
 
   handleClick(i) {
     const {
-      items, currentPlayer, totalSteps, toggledStep, stepsList
+      items, currentPlayer, toggledStep, stepsList
     } = this.state;
     const { [currentPlayer]: hcCurrentPlayer } = this.props;
     const updatedItemsArr = [...items];
@@ -197,7 +197,7 @@ export default class TicTacToe extends React.Component {
         items: updatedItems,
         stepsList: stepsListUpdated,
         winnerIsFound: true,
-        currentPlayer: currentPlayer
+        currentPlayer
       });
       onIncreaseTotalSets();
       onIncreasePlayerWin(currentPlayer);
@@ -214,10 +214,10 @@ export default class TicTacToe extends React.Component {
 
   render() {
     const {
-      items, winnerIsFound, toggledStep, currentPlayer, draw
+      items, winnerIsFound, currentPlayer, draw
     } = this.state;
     const {
-      setsPlayed, player1, player2, [currentPlayer]: definedCurrentPlayer, fieldLength
+      setsPlayed, player1, player2, [currentPlayer]: definedCurrentPlayer
     } = this.props;
 
     return (
@@ -272,6 +272,7 @@ export default class TicTacToe extends React.Component {
           </div>
 
           <Nav
+            disabled={winnerIsFound || draw}
             onBack={!winnerIsFound && !draw ? this.clickBack : undefined}
             onForward={!winnerIsFound && !draw ? this.clickForward : undefined}
           />
@@ -284,7 +285,7 @@ export default class TicTacToe extends React.Component {
 TicTacToe.propTypes = {
   player1: PropTypes.object,
   player2: PropTypes.object,
-  currentPlayer: PropTypes.string,
+  defaultPlayer: PropTypes.string,
   fieldLength: PropTypes.number,
   setsPlayed: PropTypes.number,
   onIncreaseTotalSets: PropTypes.func,
