@@ -5,7 +5,7 @@ import {
   selectTTTSetsPlayed,
   selectTTTPlayer1,
   selectTTTPlayer2,
-  selectTTTCurrentPlayer
+  selectTTTDefaultPlayer
 } from './selectors';
 import {
   increaseTotalSets,
@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = createStructuredSelector({
   fieldLength: selectTTTFieldLength(),
-  currentPlayer: selectTTTCurrentPlayer(),
+  defaultPlayer: selectTTTDefaultPlayer(),
   setsPlayed: selectTTTSetsPlayed(),
   player1: selectTTTPlayer1(),
   player2: selectTTTPlayer2(),

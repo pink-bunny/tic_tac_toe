@@ -7,7 +7,7 @@ import {
 export const initialState = {
   fieldLength: 9,
   winner: null,
-  currentPlayer: 'player1',
+  defaultPlayer: 'player1',
   player1: {
     value: 'x',
     wins: 0

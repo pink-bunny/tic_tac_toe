@@ -4,7 +4,7 @@ import {
   selectTTTSetsPlayed,
   selectTTTPlayer1,
   selectTTTPlayer2,
-  selectTTTCurrentPlayer
+  selectTTTDefaultPlayer
 } from '../selectors';
 
 describe('selectTicTacToe', () => {
@@ -69,8 +69,8 @@ describe('selectTTTPlayer2', () => {
   });
 });
 
-describe('selectTTTCurrentPlayer', () => {
-  const tttCurrentPlayer = selectTTTCurrentPlayer();
+describe('selectTTTDefaultPlayer', () => {
+  const tttCurrentPlayer = selectTTTDefaultPlayer();
   it('should select TicTacToe current player', () => {
     const currentPlayer = 'player2';
     const mockedState = {

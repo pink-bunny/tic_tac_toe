@@ -15,6 +15,7 @@ export default class TicTacToe extends React.Component {
       currentPlayer: null,
       items: [],
       winnerIsFound: false,
+      draw: false,
       stepsList: [],
       totalSteps: 0,
       toggledStep: 0
@@ -22,9 +23,9 @@ export default class TicTacToe extends React.Component {
   }
 
   componentWillMount() {
-    const { currentPlayer } = this.props;
+    const { defaultPlayer } = this.props;
     this.setState({
-      currentPlayer,
+      currentPlayer: defaultPlayer,
       items: this.createInitalArr(),
       stepsList: [
         this.createInitalArr()
@@ -33,11 +34,12 @@ export default class TicTacToe extends React.Component {
   }
 
   startNewGame = () => {
-    const { currentPlayer } = this.props;
+    const { defaultPlayer } = this.props;
     this.setState({
-      currentPlayer,
+      currentPlayer: defaultPlayer,
       items: this.createInitalArr(),
       winnerIsFound: false,
+      draw: false,
       stepsList: [
         this.createInitalArr()
       ],
@@ -112,7 +114,7 @@ export default class TicTacToe extends React.Component {
       currentPlayer: this.calcPlayerTurn(),
       items: updatedItemsArr,
       stepsList: stepsListUpdated,
-      totalSteps: totalSteps + 1,
+      totalSteps: toggledStep + 1,
       toggledStep: toggledStep + 1
     }, () => {
       this.checkWinner(currentPlayer);
@@ -195,26 +197,28 @@ export default class TicTacToe extends React.Component {
         items: updatedItems,
         stepsList: stepsListUpdated,
         winnerIsFound: true,
-        currentPlayer: cwCurrentPlayer
+        currentPlayer: currentPlayer
       });
       onIncreaseTotalSets();
-      onIncreasePlayerWin(cwCurrentPlayer);
+      onIncreasePlayerWin(currentPlayer);
     }
 
     // Draw
-    if (totalSteps === fieldLength - 1) {
+    if (totalSteps === fieldLength) {
+      this.setState({
+        draw: true
+      });
       onIncreaseTotalSets();
     }
   }
 
   render() {
     const {
-      items, winnerIsFound, toggledStep, currentPlayer
+      items, winnerIsFound, toggledStep, currentPlayer, draw
     } = this.state;
     const {
       setsPlayed, player1, player2, [currentPlayer]: definedCurrentPlayer, fieldLength
     } = this.props;
-    const calcDraw = toggledStep === fieldLength && !winnerIsFound;
 
     return (
       <section className="ttt">
@@ -233,13 +237,13 @@ export default class TicTacToe extends React.Component {
               is winner. Our congatulations!
             </InfoTitle>
           )}
-        {calcDraw
+        {draw
           && (
             <InfoTitle className="ttt-title--draw">
               None of the players won.
             </InfoTitle>
           )}
-        {!winnerIsFound && !calcDraw ? (
+        {!winnerIsFound && !draw ? (
           <InfoTitle>
             It is
             <span className="ttt-title__sign">
@@ -252,7 +256,7 @@ export default class TicTacToe extends React.Component {
         }
 
         <div className="ttt-field-wrap">
-          {winnerIsFound || calcDraw ? (
+          {winnerIsFound || draw ? (
             <NewGameBtn onStartNewGame={this.startNewGame} />
           ) : null
           }
@@ -268,8 +272,8 @@ export default class TicTacToe extends React.Component {
           </div>
 
           <Nav
-            onBack={!winnerIsFound ? this.clickBack : undefined}
-            onForward={!winnerIsFound ? this.clickForward : undefined}
+            onBack={!winnerIsFound && !draw ? this.clickBack : undefined}
+            onForward={!winnerIsFound && !draw ? this.clickForward : undefined}
           />
         </div>
       </section>
