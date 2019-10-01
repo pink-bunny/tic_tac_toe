@@ -204,7 +204,7 @@ export default class TicTacToe extends React.Component {
     }
 
     // Draw
-    if (totalSteps === fieldLength) {
+    if (totalSteps === fieldLength && !winnerCombination) {
       this.setState({
         draw: true
       });
